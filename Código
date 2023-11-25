@@ -43,3 +43,48 @@ def transformada_Fourier(omega, k):
 omega = float(input("Digite el valor de omega: "))
 k = float(input("Digite el valor de k: "))
 transformada_Fourier(omega,k)
+
+#####
+alpha = 1
+f = 100
+t = np.linspace(0, 2, 1000)
+x = np.linspace(0, 10, 1000)
+particula = np.exp(-alpha * t**2) * np.cos(2 * np.pi * f * t)
+
+plt.plot(t, particula)
+plt.title('Pulso Gaussiano Modulado')
+plt.xlabel('Tiempo')
+plt.ylabel('Amplitud')
+plt.show()
+
+# Transformada de Fourier
+fourier = fft(particula)
+# Posicion
+posicion = np.fft.fftfreq(len(x), x[1] - x[0])
+
+# Posicion dominante
+posicion_dominante = np.abs(posicion[np.argmax(np.abs(fourier))])
+
+# Gráfica
+plt.figure(figsize=(12,6))
+plt.subplot(2, 1, 2)
+plt.plot(x, particula.real, label='Partícula (Parte Real)')
+plt.title('Señal de la Partícula')
+plt.legend()
+
+plt.figure(figsize=(12,6))
+plt.subplot(2, 1, 2)
+plt.plot(posicion, np.abs(fourier))
+plt.title('Transformada de Fourier con respecto al espacio')
+plt.xlabel('Posición')
+plt.show()
+
+plt.figure(figsize=(12,6))
+plt.subplot(2, 1, 2)
+plt.plot(t, np.abs(fourier))
+plt.title('Transformada de Fourier con respecto al tiempo')
+plt.xlabel('Tiempo')
+plt.show()
+
+print(f'Posición donde se encuentra: {posicion_dominante}')
+plt.plot(posicion,particula)
